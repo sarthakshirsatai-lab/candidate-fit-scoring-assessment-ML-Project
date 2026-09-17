@@ -1,4 +1,3 @@
-
 # Candidate-Fit Scoring
 
 An end-to-end MLDLC (Machine Learning Development Life Cycle) build: a candidate-job fit prediction model for senior AI Product Manager hiring, built solo via spec-based vibe coding with Claude Code.
@@ -85,4 +84,4 @@ Open `http://127.0.0.1:5000/`, click **Upload & Score Candidates**, and select a
 
 ## Full documentation
 
-A complete project summary — including the cost/value business case, positioning against existing tools, and detailed methodology write-up — is available separately as `final-project-summary.docx`. The full set of prompts used to build this with Claude Code is in `candidate-fit-scoring-prompts.pdf`.
+A more detailed project write-up — including the business case, positioning against existing tools, and full methodology — is maintained separately and shared directly with reviewers.
