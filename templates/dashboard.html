@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitScore &mdash; Candidate Fit Scoring Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="app-shell">
+    <nav class="sidebar">
+      <div class="sidebar-logo">FitScore</div>
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-item active"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+      </ul>
+    </nav>
+
+    <main class="main-content">
+      <header class="main-header">
+        <div>
+          <h1 class="page-title">Candidate Fit Scoring Dashboard</h1>
+          <p class="page-subtitle">
+            {% if last_run %}Last run: {{ last_run }}{% else %}Last run: never{% endif %}
+          </p>
+        </div>
+        <div class="header-action">
+          <input type="file" id="csv-input" name="file" accept=".csv" hidden />
+          <button type="button" id="upload-btn" class="btn-primary" {% if model_error %}disabled{% endif %}>
+            Upload &amp; Score Candidates
+          </button>
+        </div>
+      </header>
+
+      <div id="scoring-status" class="scoring-status" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        Scoring candidates&hellip;
+      </div>
+
+      {% if model_error %}
+      <div class="error-banner">
+        <strong>Model failed to load &mdash; scoring is unavailable.</strong>
+        <p>{{ model_error }}</p>
+        <p>No predictions can be shown until <code>models/logistic_regression.pkl</code> loads successfully. Nothing below is a fallback or estimated score.</p>
+      </div>
+      {% else %}
+
+      <div id="upload-error" class="error-banner" hidden></div>
+
+      <section class="stat-cards">
+        <div class="stat-card" data-filter="all" id="stat-card-all">
+          <div class="stat-label">Total Candidates</div>
+          <div class="stat-number stat-plain">{{ stats.total if stats else 0 }}</div>
+        </div>
+        <div class="stat-card" data-filter="Strong Fit">
+          <div class="stat-label">Strong Fit</div>
+          <div class="stat-number stat-green">{{ stats.strong_fit if stats else 0 }}</div>
+        </div>
+        <div class="stat-card" data-filter="Needs Review">
+          <div class="stat-label">Needs Review</div>
+          <div class="stat-number stat-amber">{{ stats.needs_review if stats else 0 }}</div>
+        </div>
+        <div class="stat-card" data-filter="Likely Not a Fit">
+          <div class="stat-label">Likely Not a Fit</div>
+          <div class="stat-number stat-red">{{ stats.not_a_fit if stats else 0 }}</div>
+        </div>
+      </section>
+
+      <section class="results" id="results-section">
+        {% if candidates %}
+          {% for c in candidates %}
+          <article class="candidate-row" data-row-id="{{ c.row_id }}" data-tier="{{ c.predicted_label }}">
+            <div class="candidate-row-main">
+              <span class="col-candidate-id">{{ c.candidate_id }}</span>
+              <span class="col-badge"><span class="badge {{ c.badge_class }}">{{ c.predicted_label }}</span></span>
+              <p class="top-factor">{{ c.top_factor_sentence }}</p>
+              <button type="button" class="col-toggle btn-toggle" data-action="toggle-breakdown">See breakdown</button>
+              <button type="button" class="col-shortlist btn-decision btn-shortlist {{ 'active' if c.decision == 'Shortlist' else '' }}" data-decision="Shortlist">Shortlist</button>
+              <button type="button" class="col-pass btn-decision btn-pass {{ 'active' if c.decision == 'Pass' else '' }}" data-decision="Pass">Pass</button>
+            </div>
+
+            <div class="candidate-breakdown" hidden>
+              <table class="breakdown-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Candidate value</th>
+                    <th>Contribution</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% set values = {
+                    "Experience": c.experience,
+                    "Qualifications": c.qualifications,
+                    "Skills": c.skills,
+                    "Prior Job Title": c.prior_job_title
+                  } %}
+                  {% for feature in feature_order %}
+                  {% set contribution = c.breakdown[feature] %}
+                  <tr>
+                    <td>{{ feature }}</td>
+                    <td class="breakdown-value">{{ values[feature] }}</td>
+                    <td class="breakdown-contribution {{ 'contribution-positive' if contribution >= 0 else 'contribution-negative' }}">
+                      {{ "+" if contribution >= 0 else "−" }}{{ "%.3f"|format(contribution|abs) }}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <p class="breakdown-probs">
+                Model confidence &mdash;
+                Strong Fit: {{ "%.0f"|format(c.probabilities["Strong Fit"] * 100) }}%,
+                Needs Review: {{ "%.0f"|format(c.probabilities["Needs Review"] * 100) }}%,
+                Likely Not a Fit: {{ "%.0f"|format(c.probabilities["Likely Not a Fit"] * 100) }}%
+              </p>
+            </div>
+          </article>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state">
+            No candidates scored yet. Click <strong>Upload &amp; Score Candidates</strong> to score a CSV batch.
+          </div>
+        {% endif %}
+      </section>
+
+      <nav class="pagination" id="pagination-controls" hidden></nav>
+      {% endif %}
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
