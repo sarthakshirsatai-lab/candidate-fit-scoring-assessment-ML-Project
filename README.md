@@ -42,7 +42,7 @@ candidate-fit-scoring/
 2. **Gather data** — Kaggle job-postings dataset (CC0, 1.6M+ rows), filtered to 2,553 relevant rows
 3. **Preprocess** — chunked loading, PII/discriminatory field exclusion, country/role filtering
 4. **EDA** — pandas-based fallback analysis (ydata-profiling was incompatible with the environment's Python version)
-5. **Feature engineering** — JD authored as a 7-point rubric; 250 synthetic candidates generated and labeled against it
+5. **Feature engineering** — a 7-point JD rubric was authored to compute each candidate's label only; the model itself trains on 4 real candidate features (Experience, Qualifications, Skills, Prior Job Title), with all 7 rubric columns excluded from training as label leakage
 6. **Model training & evaluation** — Logistic Regression vs. Decision Tree, stratified 80/20 split
 7. **Deployment** — Flask dashboard with batch upload, per-candidate explanations, human-in-the-loop review
 8. **Testing** — held-out evaluation, verified failure-mode handling (missing model file → explicit error, never a fabricated score)
