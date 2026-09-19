@@ -1,0 +1,118 @@
+ydata-profiling was not usable (reason: ModuleNotFoundError: No module named 'ydata_profiling'). This Python version is outside ydata-profiling's supported range, so this is expected. Falling back to a custom lightweight EDA report.
+
+=== describe(include='all') ===
+                 Job Id     Experience Qualifications Salary Range   location Country latitude longitude Work Type Company Size Job Posting Date     Job Title          Role    Job Portal                                                                                              Job Description                                                                                                                Benefits                                                                                                                                                                                                                                              skills                                                                                                                                                 Responsibilities           Company                                                                                                                                             Company Profile
+count              2553           2553           2553         2553       2553    2553     2553      2553      2553         2553             2553          2553          2553          2553                                                                                                         2553                                                                                                                    2553                                                                                                                                                                                                                                                2553                                                                                                                                                             2553              2553                                                                                                                                                        2545
+unique             2553             48             10          554         10      10       10        10         5         2525              713             6            12            16                                                                                                           12                                                                                                                      11                                                                                                                                                                                                                                                  12                                                                                                                                                               12               824                                                                                                                                                         820
+top     590208528082711  4 to 11 Years            PhD    $62K-$86K  Stockholm  Sweden  60.1282   18.6435    Intern        99951       2022-02-18  Data Analyst  Data Analyst  Jobs2Careers  Analyze data sets, generate insights, and provide data-driven recommendations to inform business decisions.  {'Employee Assistance Programs (EAP), Tuition Reimbursement, Profit-Sharing, Transportation Benefits, Parental Leave'}  Data analysis tools (e.g., SQL, Python) Data visualization tools (e.g., Tableau, Power BI) Statistical analysis Data cleansing and transformation Data modeling Communication of data insights Problem-solving Attention to detail Business acumen  Analyze marketing data to measure campaign performance and ROI. Provide insights for marketing strategy adjustments. Create data visualizations and dashboards.  EnLink Midstream  {"Sector":"Energy","Industry":"Pipelines","City":"Dallas","State":"Texas","Zip":"75201","Website":"www.enlink.com","Ticker":"ENLC","CEO":"Jesse Arenivas"}
+freq                  1             69            294           13        271     271      271       271       526            2               10           762           508           228                                                                                                          508                                                                                                                     277                                                                                                                                                                                                                                                 508                                                                                                                                                              508                10                                                                                                                                                          10
+
+=== Missingness by column ===
+                  null_count  null_pct
+Job Id                     0      0.00
+Experience                 0      0.00
+Qualifications             0      0.00
+Salary Range               0      0.00
+location                   0      0.00
+Country                    0      0.00
+latitude                   0      0.00
+longitude                  0      0.00
+Work Type                  0      0.00
+Company Size               0      0.00
+Job Posting Date           0      0.00
+Job Title                  0      0.00
+Role                       0      0.00
+Job Portal                 0      0.00
+Job Description            0      0.00
+Benefits                   0      0.00
+skills                     0      0.00
+Responsibilities           0      0.00
+Company                    0      0.00
+Company Profile            8      0.31
+
+=== Correlation matrix (numeric columns) ===
+Note: Salary Range and Experience are stored as text ranges (e.g. "$59K-$99K", "5 to 15 Years") and are not included here; parsing them into numeric bounds is a worthwhile follow-up but is out of scope for this pipeline run.
+
+                Job Id  latitude  longitude  Company Size
+Job Id        1.000000  0.010310  -0.007251      0.044905
+latitude      0.010310  1.000000   0.543132      0.017799
+longitude    -0.007251  0.543132   1.000000     -0.000934
+Company Size  0.044905  0.017799  -0.000934      1.000000
+
+=== Top 15 values per key categorical column ===
+
+--- Country ---
+Country
+Sweden         271
+Netherlands    271
+Spain          264
+Portugal       254
+France         252
+Poland         251
+Germany        250
+Italy          249
+Belgium        249
+Ireland        242
+
+--- Work Type ---
+Work Type
+Intern       526
+Full-Time    524
+Temporary    505
+Part-Time    499
+Contract     499
+
+--- Job Portal ---
+Job Portal
+Jobs2Careers           228
+USAJOBS                217
+Stack Overflow Jobs    215
+The Muse               215
+FlexJobs               198
+Snagajob               194
+Idealist               192
+SimplyHired            192
+Internships.com        191
+Glassdoor              108
+Indeed                 107
+ZipRecruiter           105
+LinkedIn               103
+Dice                    97
+Monster                 96
+
+--- Qualifications ---
+Qualifications
+PhD       294
+M.Tech    263
+MBA       260
+BCA       260
+B.Tech    254
+MCA       252
+B.Com     251
+BA        251
+M.Com     242
+BBA       226
+
+--- Job Title ---
+Job Title
+Data Analyst         762
+Marketing Analyst    508
+Data Engineer        472
+Product Manager      342
+Data Scientist       300
+Research Analyst     169
+
+--- Role ---
+Role
+Data Analyst                     508
+Business Intelligence Analyst    307
+Data Scientist                   291
+Technical Product Manager        180
+Big Data Engineer                174
+Data Analyst Researcher          169
+Data Quality Analyst             164
+Agile Product Owner              162
+Machine Learning Engineer        160
+ETL Developer                    151
+Data Architect                   147
+Data Engineer                    140
